@@ -8,6 +8,7 @@ var icon_19_live = 'nameless-live-19.png';
 var icon_128 = "nameless-128.png";
 var title = 'Yo';
 var message = 'Nameless est en Live !';
+var testStatus = false;
 
 //Get status all 60sec
 var ct = 60000; 
@@ -70,19 +71,26 @@ function getLiveStatus(callback){
  */
 function doSomething(status){ 
 
-  if(status == true){ //If Live
+  if(status){ //If Live
 
-    chrome.browserAction.setIcon({path: icon_19_live});
-    chrome.notifications.create('isLive',{type:'basic', title:title, iconUrl: icon_128, message:message});
+    if(!testStatus){ 
+      chrome.browserAction.setIcon({path: icon_19_live});
+      chrome.notifications.create('isLive',{type:'basic', title:title, iconUrl: icon_128, message:message});
+      testStatus = true;
+    }
 
   }else{ //If Offline
 
-    chrome.browserAction.setIcon({path: icon_19});
-    chrome.notifications.clear('isLive');
-    stopInterval();
+    if(testStatus){
+      chrome.browserAction.setIcon({path: icon_19});
+      chrome.notifications.clear('isLive');
+      testStatus = false;
+      stopInterval();
 
-    ct = 60000;
-    loadInterval(ct);
+      ct = 60000;
+      loadInterval(ct);
+    }
+
   }
 
 }
