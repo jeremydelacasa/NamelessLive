@@ -18,7 +18,7 @@ var interval;
 /*
  * Create Loop Function
  */
-function loadInterval(ct){ 
+function loadInterval(){ 
 
   interval = setInterval(function(){ 
     
@@ -85,10 +85,6 @@ function doSomething(status){
       chrome.browserAction.setIcon({path: icon_19});
       chrome.notifications.clear('isLive');
       testStatus = false;
-      stopInterval();
-
-      ct = 60000;
-      loadInterval(ct);
     }
 
   }
@@ -102,7 +98,7 @@ getLiveStatus(function(status){
   doSomething(status);
 });
 
-loadInterval(ct);
+loadInterval();
 
 /*
  * Listen browser Actions
@@ -120,12 +116,4 @@ chrome.notifications.onClicked.addListener(function(notificationId){
   chrome.tabs.create({
     url: 'http://www.twitch.tv/'+channel
   });
-});
-
-//If click on notification close button
-chrome.notifications.onClosed.addListener(function(notificationId, byUser){
-  stopInterval();
-
-  ct = 300000;
-  loadInterval(ct);
 });
