@@ -1,0 +1,3 @@
+#ignore tous les fichiers .zip et .xpi
+*.zip
+*.xpi
